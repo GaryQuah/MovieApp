@@ -1,73 +1,83 @@
-//Display movies
+// src/pages/Home.tsx
+import { useState, useEffect } from "react";
 import MovieCard from "../components/MovieCard";
-import { useState } from "react";
+import { getPopularMovies, searchMovies } from "../services/api";
+import type { ApiMovie } from "../services/api";
+import "../css/Home.css";
 
 function Home() {
-  const [searchQuery, setSearchQuery] = useState("Search for movies");
-  const movies = [
-    {
-      id: 1,
-      title: "2020 Movie Title",
-      release_date: "2020",
-      url: "https://via.placeholder.com/150",
-      onFavouriteClick: () => alert("Favorited 2020 Movie Title!"),
-    },
-    {
-      id: 2,
-      title: "2021 Movie Title",
-      release_date: "2021",
-      url: "https://via.placeholder.com/150",
-      onFavouriteClick: () => alert("Favorited 2021 Movie Title!"),
-    },
-    {
-      id: 3,
-      title: "2022 Movie Title",
-      release_date: "2022",
-      url: "https://via.placeholder.com/150",
-      onFavouriteClick: () => alert("Favorited 2022 Movie Title!"),
-    },
-    {
-      id: 4,
-      title: "2023 Movie Title",
-      release_date: "2023",
-      url: "https://via.placeholder.com/150",
-      onFavouriteClick: () => alert("Favorited 2023 Movie Title!"),
-    },
-    {
-      id: 5,
-      title: "2024 Movie Title",
-      release_date: "2024",
-      url: "https://via.placeholder.com/150",
-      onFavouriteClick: () => alert("Favorited 2024 Movie Title!"),
-    },
-  ];
+  const [searchQuery, setSearchQuery] = useState("");
+  const [movies, setMovies] = useState<ApiMovie[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const loadPopularMovies = async () => {
+      try {
+        const popularMovies = await getPopularMovies();
+        setMovies(popularMovies);
+      } catch (err) {
+        setError("Failed to load movies...");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPopularMovies(); // ✅ Important: must call the async function
+  }, []);
+
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(searchQuery);
+
+    if (!searchQuery.trim()) return;
+    if (loading) return;
+    setLoading(true);
+
+    try {
+      const serachResults = await searchMovies(searchQuery);
+      setMovies(serachResults);
+      setError(null);
+    } catch (err) {
+      console.log(err);
+      setError("Failed to search movies");
+    } finally {
+      setLoading(false);
+    }
+
+    setSearchQuery("");
   };
 
   return (
     <div className="home">
-      <form onSubmit={handleSearch} className="serach-form">
+      <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"
           placeholder="Search for movies..."
           className="search-input"
           value={searchQuery}
-          // Update input field so we can type in the field
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button type="submit" className="search-button">
           Search
         </button>
       </form>
+
+      {loading && <p>Loading...</p>}
+      {error && <p className="error">{error}</p>}
+
       <div className="movies-grid">
-        {movies.map((movie) =>
-          movie.title.toLowerCase().startsWith(searchQuery.toLowerCase()) ? (
-            <MovieCard movie={movie} key={movie.id} />
-          ) : null
-        )}
+        {movies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={{
+              title: movie.title,
+              release_date: movie.release_date,
+              url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
+              onFavouriteClick: () => alert(`Favourited: ${movie.title}`),
+            }}
+          />
+        ))}
       </div>
     </div>
   );

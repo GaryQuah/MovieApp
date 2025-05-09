@@ -1,3 +1,6 @@
+// src/components/MovieCard.tsx
+import "../css/MovieCard.css";
+
 type Movie = {
   title: string;
   release_date: string;
@@ -5,7 +8,6 @@ type Movie = {
   onFavouriteClick: () => void;
 };
 
-//title, releasedate, on click
 function MovieCard({ movie }: { movie: Movie }) {
   return (
     <div className="movie-card">
@@ -17,7 +19,7 @@ function MovieCard({ movie }: { movie: Movie }) {
       </div>
       <div className="movie-info">
         <h3>{movie.title}</h3>
-        <h3>{movie.release_date}</h3>
+        <h3>{movie.release_date?.split("-")[0]}</h3>
       </div>
     </div>
   );

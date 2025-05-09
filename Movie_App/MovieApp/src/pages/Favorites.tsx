@@ -1,4 +1,5 @@
 //Display favorite movies
+import "../css/Favorites.css";
 
 function Favorites() {
   return (
