@@ -1,19 +1,34 @@
-// src/components/MovieCard.tsx
 import "../css/MovieCard.css";
+import { useMovieContext } from "../contexts/MovieContext";
 
-type Movie = {
+export type Movie = {
+  id: string;
   title: string;
   release_date: string;
   url: string;
-  onFavouriteClick: () => void;
 };
 
 function MovieCard({ movie }: { movie: Movie }) {
+  const { isFavorite, addToFavorites, removeFromFavorites } = useMovieContext();
+  const favorite = isFavorite(movie.id);
+
+  function onFavouriteClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if (favorite) {
+      removeFromFavorites(movie.id);
+    } else {
+      addToFavorites(movie);
+    }
+  }
+
   return (
     <div className="movie-card">
       <img src={movie.url} alt={movie.title} />
       <div className="movie-overlay">
-        <button className="favorite-btn" onClick={movie.onFavouriteClick}>
+        <button
+          className={`favorite-btn ${favorite ? "active" : ""}`}
+          onClick={onFavouriteClick}
+        >
           ❤
         </button>
       </div>

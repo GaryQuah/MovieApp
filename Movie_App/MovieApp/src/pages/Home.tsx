@@ -71,10 +71,10 @@ function Home() {
           <MovieCard
             key={movie.id}
             movie={{
+              id: String(movie.id),
               title: movie.title,
               release_date: movie.release_date,
               url: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-              onFavouriteClick: () => alert(`Favourited: ${movie.title}`),
             }}
           />
         ))}
