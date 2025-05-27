@@ -5,6 +5,7 @@ import { Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 //Allows us to navigate between pages.
 import { MovieProvider } from "./contexts/MovieContext";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home></Home>} />
           <Route path="/favorites" element={<Favorites></Favorites>} />
+          <Route path="/login" element={<Login></Login>} />
         </Routes>
       </main>
     </MovieProvider>
