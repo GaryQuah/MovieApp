@@ -12,13 +12,9 @@ function Signup() {
     e.preventDefault();
 
     axios
-      .post("", { name, email, password })
+      .post("http://localhost:3001/register", { name, email, password })
       .then((result) => console.log(result))
       .catch((err) => console.error(err));
-
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
   };
 
   return (
