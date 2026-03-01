@@ -7,7 +7,7 @@ This is a Movie application that allows users to browse and search for movies. I
 - **Frontend:** React
 - **Build Tool:** Vite
 - **Styling:** CSS
-- **API:** The `services/api.ts` file suggests that it interacts with an external API to fetch movie data.
+- **API:** interacts with an external API to fetch movie data.
 
 ## Screenshots
 
