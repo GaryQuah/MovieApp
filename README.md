@@ -1,6 +1,6 @@
 # Basic Movie Application For Practicing REACT
 
-This is a Movie application that allows users to browse and search for movies. It also has features for user authentication (login/signup) and managing a list of favorite movies.
+This is a Movie application that allows users to browse and search for movies. It also has features for managing a list of favorite movies.
 
 ## Tech Stack
 
