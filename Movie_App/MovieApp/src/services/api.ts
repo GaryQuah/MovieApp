@@ -7,7 +7,8 @@ export interface ApiMovie {
   overview: string;
 }
 
-const API_KEY = "fb3b0751f16aaa053c82eb532642c2b3";
+// Read from .env
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
 export const getPopularMovies = async (): Promise<ApiMovie[]> => {
